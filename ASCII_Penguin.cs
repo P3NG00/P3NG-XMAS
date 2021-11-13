@@ -10,8 +10,9 @@ using System;
 
 :: ---------------- ::
 ::                  ::
-::     P3NG.exe     ::
+::  ASCII_Penguin   ::
 ::      v1.0.0      ::
+:: Variant of P3NG  ::
 ::                  ::
 ::  Bryant Finnern  ::
 ::    p3ng00.com    ::
@@ -19,9 +20,6 @@ using System;
 :: ---------------- ::
 ::                  ::
 ::     Created      ::
-::    2021.11.10    ::
-::                  ::
-::      Edited      ::
 ::    2021.11.13    ::
 ::                  ::
 :: ---------------- ::
@@ -256,37 +254,26 @@ class Penguin
     // This handles the windows that display the penguins
     static void WindowPenguin()
     {
-        string penguinStr =
-            "\n" + @"" +
-            "\n" + @"            /@@@@@@@\                 /@@@@@@@\                 /@@@@@@@\" +
-            "\n" + @"          (@@@@@ # @@@@@\           (@@@@@ # @@@@@\           (@@@@@ # @@@@@\" +
-            "\n" + @"         (` \@@@@@@@@~~~~          (` \@@@@@@@@~~~~          (` \@@@@@@@@~~~~" +
-            "\n" + @"        /`    \@@@@@|             /`    \@@@@@|             /`    \@@@@@|" +
-            "\n" + @"       /@@     ''''  \           /@@     ''''  \           /@@     ''''  \" +
-            "\n" + @"      /@@@@\          |         /@@@@\          |         /@@@@\          |" +
-            "\n" + @"     /@@@@@@@\        |        /@@@@@@@\        |        /@@@@@@@\        |" +
-            "\n" + @"    /@@@@@@@@@        |       /@@@@@@@@@        |       /@@@@@@@@@        |" +
-            "\n" + @"    |@@@@@@@@         |       |@@@@@@@@         |       |@@@@@@@@         |" +
-            "\n" + @"    |@@@@@@@          |       |@@@@@@@          |       |@@@@@@@          |" +
-            "\n" + @"    |@@@@@@@          |       |@@@@@@@          |       |@@@@@@@          |" +
-            "\n" + @"    |@@@'@@@@        |        |@@@'@@@@        |        |@@@'@@@@        |" +
-            "\n" + @"    |@@@ '@@@        ;        |@@@ '@@@        ;        |@@@ '@@@        ;" +
-            "\n" + @"    |@@@  @@;       ;         |@@@  @@;       ;         |@@@  @@;       ;" +
-            "\n" + @"    |@@@  ''       ;          |@@@  ''       ;          |@@@  ''       ;" +
-            "\n" + @"    (@@@@         ;           (@@@@         ;           (@@@@         ;" +
-            "\n" + @"     (@@@@        |            (@@@@        |            (@@@@        |" +
-            "\n" + @"      (__@@_______)             (__@@_______)             (__@@_______)" +
-            "\n" + @"" +
-            "\n" + @"          !!! THE PENGUINS WILL RISE !!! THE PENGUINS WILL RISE !!!" +
-            "\n" + @"" +
-            "\n" + @"          !!! THE PENGUINS WILL RISE !!! THE PENGUINS WILL RISE !!!" +
-            "\n" + @"" +
-            "\n" + @"          !!! THE PENGUINS WILL RISE !!! THE PENGUINS WILL RISE !!!" +
-            "\n" + @"" +
-            "\n" + @"                   CONTACT OUR CREATOR FOR THE CURE";
+        string asciiStr =
+            "\n" + @"       .     .                       *** **" +
+            "\n" + @"                !      .           ._*.                       ." +
+            "\n" + @"             - -*- -       .-'-.   !  !     ." +
+            "\n" + @"    .    .      *       .-' .-. '-.!  !             .              ." +
+            "\n" + @"               ***   .-' .-'   '-. '-.!    ." +
+            "\n" + @"       *       ***.-' .-'         '-. '-.                   ." +
+            "\n" + @"       *      ***$*.-'               '-. '-.     *" +
+            "\n" + @"  *   ***     * ***     ___________     !-..!-.  *     *         *    *" +
+            "\n" + @"  *   ***    **$** *   !__!__!__!__!    !    !  ***   ***    .   *   ***" +
+            "\n" + @" *** ****    * *****   !__!__!__!__!    !      .***-.-*** *     *** * #_" +
+            "\n" + @"**********  * ****$ *  !__!__!__!__!    !-..--'*****   # '*-..---# ***" +
+            "\n" + @"**** *****  * $** ***      .            !      *****     ***       ***" +
+            "\n" + @"************ ***** ***-..-' -.._________!     *******    ***      *****" +
+            "\n" + @"***********   .-#.-'           '-.-''-..!     *******   ****...     #" +
+            "\n" + @"  # ''-.---''                           '-....---#..--'****** ''-.---''-" +
+            "\n" + @"                  Merry Christmas ~ JP3                   #";
 
         int windowWidth = 78;
-        int windowHeight = 27;
+        int windowHeight = 20;
 
         /*
 
@@ -316,7 +303,7 @@ class Penguin
         Console.Clear();
 
         // Write to Console
-        Console.Write(penguinStr);
+        Console.Write(asciiStr);
 
         /*
 
@@ -368,6 +355,8 @@ class Penguin
         Console.WriteLine("\n " + TITLE + " has been terminated.\n");
 
         // Remove files
+        Console.WriteLine("Attempting to remove files...");
+
         if (destDir.Exists)
         {
             if (destFile.Exists)
@@ -376,12 +365,20 @@ class Penguin
             }
 
             destDir.Delete(true);
+
+            Console.WriteLine("Deleted");
+        }
+        else
+        {
+            Console.WriteLine("Files aren't present");
         }
 
         // Remove registry key
         destRegKey.DeleteValue(TITLE);
+        Console.WriteLine("Removed from startup");
 
         // Close after user input...
+        Console.WriteLine("\n " + TITLE + " has been completely removed.\n");
         Console.Write("Press any key to exit...");
         Console.ReadKey();
     }
